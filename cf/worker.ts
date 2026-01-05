@@ -46,16 +46,22 @@ export default {
 
       if (!env.ASSETS) {
         return new Response(
-          "Brak bindingu ASSETS. Ten Worker musi być wdrożony z assets (wrangler.toml: assets = { directory = \"./app\" }).",
+          "Brak bindingu ASSETS. Ten Worker musi być wdrożony z assets (wrangler.toml: assets = { directory = \"./app/static\" }).",
           { status: 500, headers: { "content-type": "text/plain; charset=utf-8" } }
         );
       }
 
-      // Statyczne pliki (UI jest w /static/*, bo FastAPI tak serwuje lokalnie)
-      // Przy assets = { directory = "./app" } pliki są dostępne jako /static/...
+      // Statyczne pliki (UI odwołuje się do /static/* jak w FastAPI)
+      // Przy assets = { directory = "./app/static" } pliki są dostępne jako /*
       if (url.pathname === "/") {
         const rewritten = new URL(request.url);
-        rewritten.pathname = "/static/index.html";
+        rewritten.pathname = "/index.html";
+        return env.ASSETS.fetch(new Request(rewritten.toString(), request));
+      }
+
+      if (url.pathname.startsWith("/static/")) {
+        const rewritten = new URL(request.url);
+        rewritten.pathname = url.pathname.replace("/static/", "/");
         return env.ASSETS.fetch(new Request(rewritten.toString(), request));
       }
 
