@@ -1,6 +1,6 @@
 {
   // Fallback config for environments that don't pick up wrangler.toml
-  "name": "lab8-klienci-zamowienia",
+  "name": "programowanie-aplikacji",
   "main": "cf/worker.ts",
   "compatibility_date": "2026-01-05",
   "assets": {
