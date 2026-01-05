@@ -40,7 +40,7 @@ def _get_str(name: str, default: str = "") -> str:
 
 def get_settings() -> Settings:
     return Settings(
-        gemini_api_key="AIzaSyDW_tqiFgiwbJw4_nwwZO9voPUEv_BCJ0g",
+        gemini_api_key=_get_str("GEMINI_API_KEY", ""),
         gemini_model=_get_str("GEMINI_MODEL", "gemini-2.5-flash"),
         sqlite_path=_get_str("SQLITE_PATH", "./app.db"),
         debug_tool_trace=_get_bool("DEBUG_TOOL_TRACE", False),
