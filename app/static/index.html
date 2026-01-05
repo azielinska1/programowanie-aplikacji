@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>lab8 — Klienci i zamówienia</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Klienci i zamówienia (Gemini + tools)</h1>
+
+      <form id="chat-form" class="row">
+        <input
+          id="message"
+          name="message"
+          type="text"
+          placeholder='Np. "Ile zamówień ma klient ACME?"'
+          autocomplete="off"
+          required
+        />
+        <button type="submit" id="send">Wyślij</button>
+      </form>
+
+      <section class="panel">
+        <div class="label">Odpowiedź</div>
+        <pre id="answer"></pre>
+      </section>
+
+      <section class="panel" id="trace-panel" hidden>
+        <div class="label">Tool trace (debug)</div>
+        <pre id="trace"></pre>
+      </section>
+
+      <footer class="hint">
+        Wskazówka: włącz trace ustawiając <code>DEBUG_TOOL_TRACE=true</code> w <code>.env</code>.
+      </footer>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

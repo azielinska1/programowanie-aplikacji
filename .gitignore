@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+
+# secrets
+.env
+
+# local db
+app.db
+*.db
