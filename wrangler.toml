@@ -1,0 +1,9 @@
+name = "lab8-klienci-zamowienia"
+main = "cf/worker.ts"
+compatibility_date = "2026-01-05"
+
+# Serwuj statyczne pliki UI z istniejącego katalogu
+assets = { directory = "./app/static" }
+
+[vars]
+GEMINI_MODEL = "gemini-2.5-flash"
