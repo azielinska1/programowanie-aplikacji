@@ -1,0 +1,11 @@
+{
+  "name": "lab8-cloudflare",
+  "private": true,
+  "devDependencies": {
+    "wrangler": "^4.54.0"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  }
+}

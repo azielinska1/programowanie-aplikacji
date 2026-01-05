@@ -1,0 +1,13 @@
+{
+  // Fallback config for environments that don't pick up wrangler.toml
+  "name": "lab8-klienci-zamowienia",
+  "main": "cf/worker.ts",
+  "compatibility_date": "2026-01-05",
+  "assets": {
+    "directory": "./app/static"
+  },
+  "vars": {
+    "GEMINI_MODEL": "gemini-2.5-flash",
+    "BACKEND_URL": "https://YOUR-BACKEND-FASTAPI.example.com"
+  }
+}
