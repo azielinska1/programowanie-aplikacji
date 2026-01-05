@@ -8,6 +8,6 @@
   },
   "vars": {
     "GEMINI_MODEL": "gemini-2.5-flash",
-    "BACKEND_URL": "https://YOUR-BACKEND-FASTAPI.example.com"
+    "BACKEND_URL": "https://programowanie-aplikacji.onrender.com"
   }
 }
