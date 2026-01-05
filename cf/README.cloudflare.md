@@ -1,9 +1,14 @@
-# Cloudflare (Wrangler)
+# Cloudflare (Wrangler) — Opcja A
 
-Ten katalog dodaje minimalny Worker, żeby Wrangler miał **entry-point** i mógł wdrożyć statyczne UI z `app/static`.
+UI jest hostowane na Cloudflare (Workers + assets), a endpoint `/api/chat` jest **proxy** do zewnętrznego backendu FastAPI.
 
-## Dlaczego nie działa FastAPI na Workers?
-Cloudflare Workers uruchamiają kod JS/TS/WASM. Python/FastAPI nie działa tam bez portowania.
+## Wymagania
+- Działający backend FastAPI wystawiony publicznie po HTTPS (np. Render/Fly.io/Azure App Service).
+
+## Konfiguracja
+Ustaw `BACKEND_URL` w [wrangler.toml](wrangler.toml) albo w Cloudflare dashboard jako zmienną środowiskową.
+Przykład:
+- `BACKEND_URL = "https://twoj-backend.example.com"`
 
 ## Dev
 - `wrangler dev`
@@ -11,9 +16,5 @@ Cloudflare Workers uruchamiają kod JS/TS/WASM. Python/FastAPI nie działa tam b
 ## Deploy
 - `wrangler deploy`
 
-## Sekrety
-Jeśli później przeniesiesz /api/chat na Worker, ustaw sekret:
-- `wrangler secret put GEMINI_API_KEY`
-
-## Uwaga
-W tej wersji `/api/chat` zwraca komunikat informacyjny (placeholder).
+## Dlaczego tak?
+Cloudflare Workers uruchamiają kod JS/TS/WASM. Python/FastAPI nie działa natywnie na Workers, więc proxy pozwala zachować UI na Cloudflare bez problemów CORS.

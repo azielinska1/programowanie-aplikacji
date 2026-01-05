@@ -3,24 +3,36 @@ export interface Env {
   GEMINI_MODEL: string;
   // GEMINI_API_KEY ustaw jako secret: `wrangler secret put GEMINI_API_KEY`
   GEMINI_API_KEY?: string;
+  // Publiczny URL backendu FastAPI, np. https://twoj-backend.example.com
+  BACKEND_URL: string;
 }
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
-    // Minimalny placeholder: UI działa na Cloudflare, ale backend FastAPI nie.
-    if (url.pathname === "/api/chat" && request.method === "POST") {
-      const body = {
-        answer:
-          "API /api/chat nie jest jeszcze przeniesione na Cloudflare Workers. " +
-          "FastAPI (Python) nie działa natywnie na Workers. " +
-          "Masz 2 opcje: (1) UI na Cloudflare Pages/Workers + backend na Render/Fly/Azure, " +
-          "albo (2) port backendu do Worker (TypeScript) + D1 zamiast SQLite."
-      };
-      return new Response(JSON.stringify(body), {
-        headers: { "content-type": "application/json; charset=utf-8" }
-      });
+    // Opcja A: UI na Cloudflare, backend FastAPI gdzie indziej.
+    // Proxy utrzymuje ten sam origin dla przeglądarki (brak problemów CORS).
+    if (url.pathname === "/api/chat") {
+      if (!env.BACKEND_URL) {
+        return new Response(
+          JSON.stringify({
+            answer:
+              "Brak konfiguracji BACKEND_URL w Workerze. Ustaw zmienną w wrangler.toml albo Cloudflare dashboard."
+          }),
+          { headers: { "content-type": "application/json; charset=utf-8" }, status: 500 }
+        );
+      }
+
+      const backendBase = new URL(env.BACKEND_URL);
+      const target = new URL(url.pathname + url.search, backendBase);
+
+      const proxyReq = new Request(target.toString(), request);
+      // Cloudflare nie pozwala nadpisać Host przez headers.set w Request clone, ale to nie jest potrzebne.
+      const resp = await fetch(proxyReq);
+
+      // Przepuść odpowiedź 1:1 (JSON) - UI oczekuje { answer, tool_trace? }
+      return resp;
     }
 
     // Statyczne pliki (index.html, styles.css, app.js)
