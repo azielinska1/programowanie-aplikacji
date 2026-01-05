@@ -35,7 +35,14 @@ export default {
       return resp;
     }
 
-    // Statyczne pliki (index.html, styles.css, app.js)
+    // Statyczne pliki (UI jest w /static/*, bo FastAPI tak serwuje lokalnie)
+    // Przy assets = { directory = "./app" } pliki są dostępne jako /static/...
+    if (url.pathname === "/") {
+      const rewritten = new URL(request.url);
+      rewritten.pathname = "/static/index.html";
+      return env.ASSETS.fetch(new Request(rewritten.toString(), request));
+    }
+
     return env.ASSETS.fetch(request);
   }
 };

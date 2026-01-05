@@ -4,7 +4,7 @@
   "main": "cf/worker.ts",
   "compatibility_date": "2026-01-05",
   "assets": {
-    "directory": "./app/static"
+    "directory": "./app"
   },
   "vars": {
     "GEMINI_MODEL": "gemini-2.5-flash",
